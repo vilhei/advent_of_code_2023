@@ -1,0 +1,17 @@
+[package]
+name = "advent_of_code_template"
+version = "0.1.0"
+edition = "2021"
+
+
+[lib]
+name = "advents"
+path = "advent/advents.rs"
+
+[[bin]]
+name = "advent_of_code_2022"
+path = "src/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
