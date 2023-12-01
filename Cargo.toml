@@ -7,11 +7,22 @@ edition = "2021"
 [lib]
 name = "advents"
 path = "advent/advents.rs"
+bench = false
 
 [[bin]]
 name = "advent_of_code_2022"
 path = "src/main.rs"
+bench = false
+
+[[test]]
+name = "advent_test"
+harness = false
+
+[[bench]]
+name = "advent_bench"
+harness = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+criterion = "0.5.1"

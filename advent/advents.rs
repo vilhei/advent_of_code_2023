@@ -1,5 +1,3 @@
-#[rustfmt::skip]
-pub mod utils;
 mod day1;
 mod day10;
 mod day11;
@@ -17,6 +15,7 @@ mod day21;
 mod day22;
 mod day23;
 mod day24;
+mod day25;
 mod day3;
 mod day4;
 mod day5;
@@ -24,6 +23,8 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+pub mod main_utils;
+pub mod utils;
 
 pub use day1::Day1;
 pub use day10::Day10;
@@ -42,6 +43,7 @@ pub use day21::Day21;
 pub use day22::Day22;
 pub use day23::Day23;
 pub use day24::Day24;
+pub use day25::Day25;
 pub use day3::Day3;
 pub use day4::Day4;
 pub use day5::Day5;
