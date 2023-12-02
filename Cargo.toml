@@ -26,3 +26,4 @@ harness = false
 
 [dependencies]
 criterion = "0.5.1"
+nom = "7.1.3"

@@ -41,6 +41,7 @@ impl Task for Day1 {
             (8, "eight"),
             (9, "nine"),
         ];
+
         let mut sum = 0;
 
         for line in file_content.lines() {
