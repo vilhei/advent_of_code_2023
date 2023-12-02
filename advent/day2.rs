@@ -2,24 +2,19 @@ use std::collections::HashMap;
 
 use crate::utils::{read_task_input_file, Task, TaskError};
 use nom::{
-    bytes::complete::{is_a, is_not, take_until1, take_while1},
+    bytes::complete::{is_a, is_not, tag},
     character::complete::{char, digit1},
+    combinator::map_res,
     multi::separated_list1,
-    sequence::pair,
+    sequence::{delimited, pair},
     IResult,
 };
 
 pub struct Day2;
 
-fn not_a_digit(c: char) -> bool {
-    !c.is_ascii_digit()
-}
-
 fn parse_id(input: &str) -> IResult<&str, u32> {
-    let (input, game) = take_until1(":")(input)?;
-    let (game, _) = take_while1(not_a_digit)(game)?;
-    let id = game.trim().parse::<u32>().unwrap();
-    let (input, _) = char(':')(input)?;
+    let parse_num = map_res(digit1, |s: &str| s.parse::<u32>());
+    let (input, id) = delimited(tag("Game"), parse_num, char(':'))(input)?;
     Ok((input, id))
 }
 
@@ -43,27 +38,23 @@ impl Task for Day2 {
         #[allow(unused_variables)]
         let mut file_content = read_task_input_file(input_file)?;
         file_content = file_content.replace(' ', "");
-        let max_red = 12;
-        let max_green = 13;
-        let max_blue = 14;
 
         let max_table = HashMap::from([
-            ("green".to_string(), max_green),
-            ("blue".to_string(), max_blue),
-            ("red".to_string(), max_red),
+            ("green".to_string(), 13),
+            ("blue".to_string(), 14),
+            ("red".to_string(), 12),
         ]);
         let mut sum = 0;
-        'outer: for line in file_content.lines() {
+        for line in file_content.lines() {
             let (input, id) = parse_id(line).unwrap();
-            let (_, sets) = parse_line(input).unwrap();
-            for set in sets {
-                for (color, n) in set {
-                    if n > max_table[&color] {
-                        continue 'outer;
-                    }
-                }
+            let (_, game) = parse_line(input).unwrap();
+            let flag = game
+                .iter()
+                .flatten()
+                .any(|(color, n)| n > &max_table[color]);
+            if !flag {
+                sum += id;
             }
-            sum += id;
         }
 
         Ok(sum.to_string())
@@ -84,16 +75,15 @@ impl Task for Day2 {
             let mut min_green = 0;
             let mut min_blue = 0;
 
-            for set in game {
-                for (color, n) in set {
-                    match color.as_str() {
-                        "red" if n > min_red => min_red = n,
-                        "green" if n > min_green => min_green = n,
-                        "blue" if n > min_blue => min_blue = n,
-                        _ => (),
-                    }
-                }
-            }
+            game.iter()
+                .flatten()
+                .for_each(|(color, n)| match color.as_str() {
+                    "red" if n > &min_red => min_red = *n,
+                    "green" if n > &min_green => min_green = *n,
+                    "blue" if n > &min_blue => min_blue = *n,
+                    _ => (),
+                });
+
             sum += min_red * min_green * min_blue;
         }
 
