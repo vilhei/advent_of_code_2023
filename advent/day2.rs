@@ -34,8 +34,6 @@ fn parse_line(input: &str) -> IResult<&str, Vec<Vec<(String, u32)>>> {
 
 impl Task for Day2 {
     fn task_part_one(&self, input_file: &str) -> Result<String, TaskError> {
-        // To suppress warning about unused file_content in generated files
-        #[allow(unused_variables)]
         let mut file_content = read_task_input_file(input_file)?;
         file_content = file_content.replace(' ', "");
 
@@ -61,8 +59,6 @@ impl Task for Day2 {
     }
 
     fn task_part_two(&self, input_file: &str) -> Result<String, TaskError> {
-        // To suppress warning about unused file_content in generated files
-        #[allow(unused_variables)]
         let mut file_content = read_task_input_file(input_file)?;
         file_content = file_content.replace(' ', "");
 
