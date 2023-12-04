@@ -10,8 +10,7 @@ impl Task for Day4 {
         for line in file_content.lines() {
             let res = check_correct_nums(line);
             if res != 0 {
-                let num = 2usize.pow(res as u32 - 1);
-                sum += num;
+                sum += 1 << (res - 1);
             }
         }
         Ok(sum.to_string())
