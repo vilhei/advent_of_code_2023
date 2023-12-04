@@ -1,12 +1,13 @@
-use crate::utils::{read_task_input_file, Task, TaskError};
+use crate::utils::{Task, TaskError};
 
 pub struct Day23;
 
 impl Task for Day23 {
+    #[allow(unused_variables)]
     fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(1))
     }
-
+    #[allow(unused_variables)]
     fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(2))
     }

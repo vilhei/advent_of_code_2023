@@ -17,12 +17,12 @@ fn bench_advent(c: &mut Criterion) {
         let file_path = format!("./inputs/day{day}.txt");
         let input = read_task_input_file(&file_path).unwrap();
         group.bench_with_input(
-            BenchmarkId::new(benchmark_name.clone() + "_part1", &file_path),
+            BenchmarkId::new(benchmark_name.clone() + "_part1", format!(" day{day}.txt")),
             &input,
             |b, i| b.iter(|| advent.task_part_one(i)),
         );
         group.bench_with_input(
-            BenchmarkId::new(benchmark_name + "_part2", &input),
+            BenchmarkId::new(benchmark_name + "_part2", format!(" day{day}.txt")),
             &input,
             |b, i| b.iter(|| advent.task_part_two(i)),
         );

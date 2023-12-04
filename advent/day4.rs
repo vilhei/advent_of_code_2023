@@ -43,25 +43,19 @@ impl Task for Day4 {
 fn check_correct_nums(line: &str) -> usize {
     let (guesses, winning) = parse_line(line);
 
-    let guesses: HashSet<_> = guesses
-        .split(' ')
-        .map(|s| s.parse::<usize>().unwrap())
-        .collect();
-    let winning: HashSet<usize> = winning
-        .split(' ')
-        .map(|s| s.parse::<usize>().unwrap())
-        .collect();
-    let res = guesses.intersection(&winning).collect::<Vec<_>>().len();
-    res
+    let guesses = str_to_num_iter(guesses);
+    let winning = str_to_num_iter(winning).collect::<HashSet<usize>>();
+    guesses.filter(|e| winning.contains(e)).count()
 }
 
-fn parse_line(line: &str) -> (String, String) {
-    let pos = line.find(':').unwrap();
-    let nums = &line[pos + 1..];
-    let pos = nums.find('|').unwrap();
-    let (winning, guesses) = nums.split_at(pos);
-    let guesses = guesses[1..].trim().replace("  ", " ");
-    let winning = winning.trim().replace("  ", " ");
+fn str_to_num_iter(s: &str) -> impl Iterator<Item = usize> + '_ {
+    s.split_whitespace().map(|s| s.parse::<usize>().unwrap())
+}
 
-    (guesses, winning)
+fn parse_line(line: &str) -> (&str, &str) {
+    let mut pos = line.find(':').unwrap();
+    let nums = &line[pos + 1..];
+    pos = nums.find('|').unwrap();
+    let (winning, guesses) = nums.split_at(pos);
+    (&guesses[1..], winning)
 }
