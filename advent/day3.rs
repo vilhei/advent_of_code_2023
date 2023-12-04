@@ -1,15 +1,11 @@
 use std::collections::HashMap;
 
-use crate::utils::{read_task_input_file, Task, TaskError};
+use crate::utils::{Task, TaskError};
 
 pub struct Day3;
 
 impl Task for Day3 {
-    fn task_part_one(&self, input_file: &str) -> Result<String, TaskError> {
-        // To suppress warning about unused file_content in generated files
-        #[allow(unused_variables)]
-        let file_content = read_task_input_file(input_file)?;
-
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
         let lines: Vec<&str> = file_content.lines().collect();
         let mut sum = 0;
         for (line_idx, line) in lines.iter().enumerate() {
@@ -49,9 +45,7 @@ impl Task for Day3 {
         Ok(sum.to_string())
     }
 
-    fn task_part_two(&self, input_file: &str) -> Result<String, TaskError> {
-        let file_content = read_task_input_file(input_file)?;
-
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         let lines: Vec<&str> = file_content.lines().collect();
 
         let mut nums: HashMap<(usize, usize), Vec<usize>> = HashMap::new();

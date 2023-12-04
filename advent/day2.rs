@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::utils::{read_task_input_file, Task, TaskError};
+use crate::utils::{Task, TaskError};
 use nom::{
     bytes::complete::{is_a, is_not, tag},
     character::complete::{char, digit1},
@@ -33,9 +33,8 @@ fn parse_line(input: &str) -> IResult<&str, Vec<Vec<(String, u32)>>> {
 }
 
 impl Task for Day2 {
-    fn task_part_one(&self, input_file: &str) -> Result<String, TaskError> {
-        let mut file_content = read_task_input_file(input_file)?;
-        file_content = file_content.replace(' ', "");
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
+        let file_content = file_content.replace(' ', "");
 
         let max_table = HashMap::from([
             ("green".to_string(), 13),
@@ -58,9 +57,8 @@ impl Task for Day2 {
         Ok(sum.to_string())
     }
 
-    fn task_part_two(&self, input_file: &str) -> Result<String, TaskError> {
-        let mut file_content = read_task_input_file(input_file)?;
-        file_content = file_content.replace(' ', "");
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
+        let file_content = file_content.replace(' ', "");
 
         let mut sum = 0;
         for line in file_content.lines() {

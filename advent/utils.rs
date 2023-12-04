@@ -14,10 +14,10 @@ pub fn read_task_input_file(path: &str) -> Result<String, TaskError> {
 }
 
 pub trait Task {
-    fn task_part_one(&self, _input_file: &str) -> Result<String, TaskError> {
+    fn task_part_one(&self, _file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(1))
     }
-    fn task_part_two(&self, _input_file: &str) -> Result<String, TaskError> {
+    fn task_part_two(&self, _file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(2))
     }
 }

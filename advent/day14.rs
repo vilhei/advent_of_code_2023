@@ -3,17 +3,11 @@ use crate::utils::{read_task_input_file, Task, TaskError};
 pub struct Day14;
 
 impl Task for Day14 {
-    fn task_part_one(&self, input_file: &str) -> Result<String, TaskError> {
-        // To suppress warning about unused file_content in generated files
-        #[allow(unused_variables)] 
-        let file_content = read_task_input_file(input_file)?;
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(1))
     }
 
-    fn task_part_two(&self, input_file: &str) -> Result<String, TaskError> {
-        // To suppress warning about unused file_content in generated files
-        #[allow(unused_variables)] 
-        let file_content = read_task_input_file(input_file)?;
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(2))
     }
 }

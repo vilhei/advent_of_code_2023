@@ -1,11 +1,9 @@
-use crate::utils::{read_task_input_file, Task, TaskError};
+use crate::utils::{Task, TaskError};
 
 pub struct Day1;
 
 impl Task for Day1 {
-    fn task_part_one(&self, input_file: &str) -> Result<String, TaskError> {
-        let file_content = read_task_input_file(input_file)?;
-
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
         let mut sum = 0;
         for line in file_content.lines() {
             let mut first_d = 0;
@@ -28,8 +26,7 @@ impl Task for Day1 {
         Ok(sum.to_string())
     }
 
-    fn task_part_two(&self, input_file: &str) -> Result<String, TaskError> {
-        let file_content = read_task_input_file(input_file)?;
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         let nums = [
             (1, "one"),
             (2, "two"),
