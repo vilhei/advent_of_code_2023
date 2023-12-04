@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::HashSet;
 
 use crate::utils::{Task, TaskError};
 
@@ -10,32 +10,22 @@ impl Task for Day4 {
         for line in file_content.lines() {
             let res = check_correct_nums(line);
             if res != 0 {
-                sum += 1 << (res - 1);
+                sum += 1 << (res - 1); // 1 << (res - 1) ==  2^(res-1)
             }
         }
         Ok(sum.to_string())
     }
 
     fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
-        let lines = file_content.lines().collect::<Vec<_>>();
-
-        let mut queue: VecDeque<usize> = (0..lines.len()).collect();
-        let mut winnings_cache: HashMap<usize, usize> = HashMap::with_capacity(lines.len());
-
-        let mut sum = 0;
-        while let Some(line_n) = queue.pop_front() {
-            sum += 1;
-
-            let line_win_amount = *winnings_cache
-                .entry(line_n)
-                .or_insert_with(|| check_correct_nums(lines[line_n]));
-
-            for r in 1..=line_win_amount {
-                queue.push_back(line_n + r);
+        let mut cards = vec![0; file_content.lines().count()];
+        for (i, line) in file_content.lines().enumerate() {
+            let res = check_correct_nums(line);
+            cards[i] += 1;
+            for j in 1..=res {
+                cards[i + j] += cards[i];
             }
         }
-
-        Ok(sum.to_string())
+        Ok(cards.iter().sum::<usize>().to_string())
     }
 }
 
