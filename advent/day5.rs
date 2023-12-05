@@ -4,11 +4,13 @@ use std::{
 };
 
 use crate::utils::{Task, TaskError};
+use indicatif::{MultiProgress, ParallelProgressIterator, ProgressBar, ProgressIterator};
+use rayon::prelude::*;
 
 pub struct Day5;
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Hash, Eq, Ord)]
-struct M {
+struct Mapper {
     source_start: i64,
     source_end: i64,
     offset: i64,
@@ -20,7 +22,7 @@ impl Task for Day5 {
         let mut lines = file_content.split("\n\n");
         let seeds = &lines.nth(0).unwrap()[6..];
 
-        let mut maps: Vec<Vec<M>> = vec![Vec::new(); 7];
+        let mut maps: Vec<Vec<Mapper>> = vec![Vec::new(); 7];
 
         for (map_idx, seed_map) in lines.enumerate() {
             let m = seed_map.lines().skip(1);
@@ -47,7 +49,7 @@ impl Task for Day5 {
         let mut lines = file_content.split("\n\n");
         let seeds = &lines.nth(0).unwrap()[6..];
 
-        let mut maps: Vec<Vec<M>> = vec![Vec::new(); 7];
+        let mut maps: Vec<Vec<Mapper>> = vec![Vec::new(); 7];
 
         for (map_idx, seed_map) in lines.enumerate() {
             let m = seed_map.lines().skip(1);
@@ -57,44 +59,35 @@ impl Task for Day5 {
             }
         }
 
-        let min_loc = Arc::new(Mutex::new(i64::MAX));
         let seeds = seeds
             .split_ascii_whitespace()
             .map(|s| s.parse::<i64>().unwrap())
             .collect::<Vec<i64>>()
             .chunks(2)
-            .flat_map(move |a| [a[0], a[1] / 2, a[0] + a[1] / 2, a[1] / 2])
+            .flat_map(|a| [a[0], a[1] / 2, a[0] + a[1] / 2, a[1] / 2])
             .collect::<Vec<i64>>();
-        // println!("{seeds:?}");
-        let mut handles = Vec::new();
-        for a in seeds.chunks(2) {
-            let s1 = a[0];
-            let s2 = a[1];
-            let pipeline_map = maps.clone();
-            let curr_min = Arc::clone(&min_loc);
-            let handle = thread::spawn(move || {
-                let mut locations = Vec::new();
-                for seed in s1..s1 + s2 {
-                    let mut key = seed;
-                    key = run_pipeline_for_seed(&pipeline_map, key);
-                    locations.push(key);
-                }
-                let min = locations.iter().min().unwrap();
-                let mut min_loc = curr_min.lock().unwrap();
-                *min_loc = std::cmp::min(*min_loc, *min);
-            });
-            handles.push(handle);
-        }
 
-        for handle in handles {
-            handle.join().unwrap();
-        }
-        let min_loc = min_loc.lock().unwrap();
-        Ok(min_loc.to_string())
+        let res = seeds
+            .chunks(2)
+            .par_bridge()
+            .map(|a| {
+                let s1 = a[0];
+                let s2 = a[1];
+                let seed_n = s1 + s2 - s1;
+                (s1..s1 + s2)
+                    .into_par_iter()
+                    .map(|seed| run_pipeline_for_seed(&maps, seed))
+                    .min()
+            })
+            .min()
+            .unwrap()
+            .unwrap();
+
+        Ok(res.to_string())
     }
 }
 
-fn run_pipeline_for_seed(pipeline: &Vec<Vec<M>>, mut seed: i64) -> i64 {
+fn run_pipeline_for_seed(pipeline: &Vec<Vec<Mapper>>, mut seed: i64) -> i64 {
     for map in pipeline {
         for map_range in map {
             if seed >= map_range.source_start && seed <= map_range.source_end {
@@ -106,13 +99,13 @@ fn run_pipeline_for_seed(pipeline: &Vec<Vec<M>>, mut seed: i64) -> i64 {
     seed
 }
 
-fn parse_mapper(line: &str) -> M {
+fn parse_mapper(line: &str) -> Mapper {
     let mut ranges = line.split_ascii_whitespace();
     let dest_start = ranges.next().unwrap().parse::<i64>().unwrap();
     let source_start = ranges.next().unwrap().parse::<i64>().unwrap();
     let range = ranges.next().unwrap().parse::<i64>().unwrap();
 
-    M {
+    Mapper {
         source_start,
         source_end: source_start + range - 1,
         offset: dest_start - source_start,
