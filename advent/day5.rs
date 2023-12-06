@@ -1,10 +1,4 @@
-use std::{
-    sync::{Arc, Mutex},
-    thread::{self},
-};
-
 use crate::utils::{Task, TaskError};
-use indicatif::{MultiProgress, ParallelProgressIterator, ProgressBar, ProgressIterator};
 use rayon::prelude::*;
 
 pub struct Day5;
