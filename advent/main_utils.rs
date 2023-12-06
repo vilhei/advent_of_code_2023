@@ -1,3 +1,5 @@
+use std::{fmt::Display, time::Duration};
+
 // use advents::utils::{Task, TaskError};
 use crate::{
     utils::{Task, TaskError},
@@ -35,9 +37,27 @@ pub fn create_day(day: u32) -> Box<dyn Task> {
     }
 }
 
-pub fn handle_answer(res: &Result<String, TaskError>, day: u64) {
+pub enum Part {
+    One,
+    Two,
+}
+
+impl Display for Part {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Part::One => "one",
+            Part::Two => "two",
+        };
+        write!(f, "{}", s)
+    }
+}
+
+pub fn handle_answer(res: &Result<String, TaskError>, day: u64, task_n: Part, dur: Duration) {
     if let Ok(answer) = res {
-        println!("Day {day} answer :\n{answer}");
+        println!(
+            "Day {day} part {task_n} answer :\n{answer}\nDuration : {:.3?}\n",
+            dur
+        );
         return;
     }
     match res.as_ref().unwrap_err() {

@@ -1,6 +1,7 @@
-use std::env;
+use std::{env, time::Instant};
 
 use advents::{
+    main_utils::Part,
     utils::{read_task_input_file, Task, TaskError},
     *,
 };
@@ -18,11 +19,16 @@ fn main() {
     match read_task_input_file(&file_path) {
         Ok(file_content) => {
             let advent: Box<dyn Task> = create_day(day as u32);
+            let mut start = Instant::now();
 
             let part_one_result = advent.task_part_one(&file_content);
-            handle_answer(&part_one_result, day);
+            let mut duration = start.elapsed();
+            handle_answer(&part_one_result, day, Part::One, duration);
+
+            start = Instant::now();
             let part_two_result = advent.task_part_two(&file_content);
-            handle_answer(&part_two_result, day);
+            duration = start.elapsed();
+            handle_answer(&part_two_result, day, Part::One, duration);
         }
         Err(e) => match e {
             TaskError::InvalidFilePath(reason) => panic!("Invalid file path :\n {reason}"),
