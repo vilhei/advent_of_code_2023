@@ -1,6 +1,6 @@
 use std::{
     fs,
-    ops::{Add, Index, IndexMut, Mul},
+    ops::{Index, IndexMut, Mul},
 };
 
 #[derive(Debug)]
@@ -82,10 +82,12 @@ where
 }
 
 impl<T: Copy> Matrix<T> {
+    #[allow(unused)]
     fn data(&self) -> &Vec<Vec<T>> {
         &self.data
     }
 
+    #[allow(unused)]
     fn transform_type<U, F>(self, f: F) -> Matrix<U>
     where
         U: Copy,
@@ -102,6 +104,7 @@ impl<T: Copy> Matrix<T> {
         }
     }
 
+    #[allow(unused)]
     fn parse<F>(input: &str, f: F) -> Self
     where
         F: Fn(&str) -> Vec<Vec<T>>,

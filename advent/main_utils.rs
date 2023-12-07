@@ -1,8 +1,10 @@
-use std::{fmt::Display, time::Duration};
+use std::fmt::Display;
+
+use util_procs::print_exec_time;
 
 // use advents::utils::{Task, TaskError};
 use crate::{
-    utils::{Task, TaskError},
+    utils::{read_task_input_file, Task, TaskError},
     *,
 };
 
@@ -52,12 +54,33 @@ impl Display for Part {
     }
 }
 
-pub fn handle_answer(res: &Result<String, TaskError>, day: u64, task_n: Part, dur: Duration) {
+pub fn process_tasks(file_path: &str, day: usize) {
+    match read_task_input_file(file_path) {
+        Ok(file_content) => {
+            let advent: Box<dyn Task> = create_day(day as u32);
+            run_task(&advent, &file_content, day, Part::One);
+            run_task(&advent, &file_content, day, Part::Two);
+        }
+        Err(e) => match e {
+            TaskError::InvalidFilePath(reason) => panic!("Invalid file path :\n {reason}"),
+            TaskError::NotImplemented(task_n) => panic!("Task {task_n} not implemented"),
+        },
+    }
+}
+
+#[print_exec_time(Exec time : )]
+#[allow(clippy::borrowed_box)]
+pub fn run_task(advent: &Box<dyn Task>, file_content: &str, day: usize, task_n: Part) {
+    let task_result = match task_n {
+        Part::One => advent.task_part_one(file_content),
+        Part::Two => advent.task_part_two(file_content),
+    };
+    handle_answer(&task_result, day, task_n);
+}
+
+pub fn handle_answer(res: &Result<String, TaskError>, day: usize, task_n: Part) {
     if let Ok(answer) = res {
-        println!(
-            "Day {day} part {task_n} answer :\n{answer}\nDuration : {:.3?}\n",
-            dur
-        );
+        println!("Day {day} part {task_n} answer :\n{answer}",);
         return;
     }
     match res.as_ref().unwrap_err() {
