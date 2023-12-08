@@ -31,3 +31,4 @@ nom = "7.1.3"
 rayon = "1.8.0"
 util_procs = { git = "https://github.com/vilhei/util_procs" }
 itertools = "0.12.0"
+num = "0.4.1"

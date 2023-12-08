@@ -9,7 +9,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/advent_of_code_2023.exe",
-            "args": ["7"],
+            "args": ["8"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
