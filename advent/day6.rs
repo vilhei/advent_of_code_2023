@@ -52,6 +52,10 @@ impl Task for Day6 {
         let win_scenario_count: usize = calc_win_scenario_count(time, record);
         Ok(win_scenario_count.to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        6
+    }
 }
 
 fn calc_win_scenario_count(time: usize, record: usize) -> usize {

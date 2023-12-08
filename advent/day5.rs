@@ -79,6 +79,10 @@ impl Task for Day5 {
 
         Ok(res.to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        5
+    }
 }
 
 fn run_pipeline_for_seed(pipeline: &Vec<Vec<Mapper>>, mut seed: i64) -> i64 {

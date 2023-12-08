@@ -256,4 +256,8 @@ impl Task for Day7 {
 
         Ok(total.to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        7
+    }
 }

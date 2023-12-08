@@ -91,6 +91,10 @@ impl Task for Day3 {
             .fold(0, |p, (_, v)| p + v[0] * v[1]);
         Ok(sum.to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        3
+    }
 }
 
 fn check_if_valid_num(

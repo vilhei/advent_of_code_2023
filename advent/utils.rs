@@ -16,6 +16,19 @@ pub fn read_task_input_file(path: &str) -> Result<String, TaskError> {
     Ok(file_contents)
 }
 
+pub trait Task {
+    #[allow(unused_variables)]
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
+        Err(TaskError::NotImplemented(1))
+    }
+    #[allow(unused_variables)]
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
+        Err(TaskError::NotImplemented(2))
+    }
+
+    fn get_day(&self) -> u32;
+}
+
 // pub trait Element:
 //     std::ops::Mul + Add<Output = Self> + std::marker::Copy + Default + std::fmt::Display
 // {
@@ -135,15 +148,6 @@ impl<T: Copy> IndexMut<usize> for Matrix<T> {
 
 pub fn parse_2d_char_array(input: &str) -> Matrix<char> {
     Matrix::from(input)
-}
-
-pub trait Task {
-    fn task_part_one(&self, _file_content: &str) -> Result<String, TaskError> {
-        Err(TaskError::NotImplemented(1))
-    }
-    fn task_part_two(&self, _file_content: &str) -> Result<String, TaskError> {
-        Err(TaskError::NotImplemented(2))
-    }
 }
 
 #[cfg(test)]

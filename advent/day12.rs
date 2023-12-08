@@ -11,4 +11,8 @@ impl Task for Day12 {
     fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(2))
     }
+
+    fn get_day(&self) -> u32 {
+        13
+    }
 }

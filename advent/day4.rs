@@ -27,6 +27,10 @@ impl Task for Day4 {
         }
         Ok(cards.iter().sum::<usize>().to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        4
+    }
 }
 
 fn check_correct_nums(line: &str) -> usize {

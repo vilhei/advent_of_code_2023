@@ -86,4 +86,8 @@ impl Task for Day1 {
 
         Ok(sum.to_string())
     }
+
+    fn get_day(&self) -> u32 {
+        1
+    }
 }
