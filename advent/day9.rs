@@ -29,20 +29,20 @@ impl Task for Day9 {
     }
 }
 
-fn solve_next(diffs: &mut Vec<Vec<i64>>) -> i64 {
+fn solve_next(diffs: &mut Vec<i64>) -> i64 {
     for i in (0..diffs.len() - 1).rev() {
-        let new = diffs[i + 1].last().unwrap() + diffs[i].last().unwrap();
-        diffs[i].push(new);
+        let new = diffs[i + 1] + diffs[i];
+        diffs[i] = new;
     }
-    *diffs.first().unwrap().last().unwrap()
+    *diffs.first().unwrap()
 }
 
-fn calc_diffs_until_zeros(mut curr: Vec<i64>) -> Vec<Vec<i64>> {
-    let mut diffs = Vec::new();
-    diffs.push(curr.clone());
+fn calc_diffs_until_zeros(mut curr: Vec<i64>) -> Vec<i64> {
+    let mut diffs: Vec<i64> = Vec::new();
+    diffs.push(*curr.last().unwrap());
     loop {
         let diff = curr.windows(2).map(|a| a[1] - a[0]).collect::<Vec<i64>>();
-        diffs.push(diff.clone());
+        diffs.push(*diff.last().unwrap());
         if diff.iter().all(|e| *e == 0) {
             break;
         }
@@ -61,6 +61,7 @@ fn parse(file_content: &str) -> Vec<Vec<i64>> {
         })
         .collect::<Vec<Vec<i64>>>()
 }
+
 fn parse_rev(file_content: &str) -> Vec<Vec<i64>> {
     file_content
         .lines()
