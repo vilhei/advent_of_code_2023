@@ -9,22 +9,18 @@ impl Task for Day9 {
         let mut total = 0;
         for sequence in sequences {
             let mut diffs = calc_diffs_until_zeros(sequence);
-
-            total += solve_next(&mut diffs, Direction::Right)
+            total += solve_next(&mut diffs)
         }
-
         Ok(total.to_string())
     }
     fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
-        let sequences = parse(file_content);
+        let sequences = parse_rev(file_content);
 
         let mut total = 0;
         for sequence in sequences {
             let mut diffs = calc_diffs_until_zeros(sequence);
-
-            total += solve_next(&mut diffs, Direction::Left);
+            total += solve_next(&mut diffs);
         }
-
         Ok(total.to_string())
     }
 
@@ -33,28 +29,12 @@ impl Task for Day9 {
     }
 }
 
-enum Direction {
-    Left,
-    Right,
-}
-
-fn solve_next(diffs: &mut Vec<Vec<i64>>, target: Direction) -> i64 {
+fn solve_next(diffs: &mut Vec<Vec<i64>>) -> i64 {
     for i in (0..diffs.len() - 1).rev() {
-        match target {
-            Direction::Left => {
-                let new = diffs[i].first().unwrap() - diffs[i + 1].first().unwrap();
-                diffs[i].insert(0, new);
-            }
-            Direction::Right => {
-                let new = diffs[i + 1].last().unwrap() + diffs[i].last().unwrap();
-                diffs[i].push(new);
-            }
-        };
+        let new = diffs[i + 1].last().unwrap() + diffs[i].last().unwrap();
+        diffs[i].push(new);
     }
-    match target {
-        Direction::Left => *diffs.first().unwrap().first().unwrap(),
-        Direction::Right => *diffs.first().unwrap().last().unwrap(),
-    }
+    *diffs.first().unwrap().last().unwrap()
 }
 
 fn calc_diffs_until_zeros(mut curr: Vec<i64>) -> Vec<Vec<i64>> {
@@ -77,6 +57,17 @@ fn parse(file_content: &str) -> Vec<Vec<i64>> {
         .map(|line| {
             line.split_ascii_whitespace()
                 .map(|s| s.parse::<i64>().unwrap())
+                .collect::<Vec<i64>>()
+        })
+        .collect::<Vec<Vec<i64>>>()
+}
+fn parse_rev(file_content: &str) -> Vec<Vec<i64>> {
+    file_content
+        .lines()
+        .map(|line| {
+            line.split_ascii_whitespace()
+                .map(|s| s.parse::<i64>().unwrap())
+                .rev()
                 .collect::<Vec<i64>>()
         })
         .collect::<Vec<Vec<i64>>>()
