@@ -32,3 +32,10 @@ rayon = "1.8.0"
 util_procs = { git = "https://github.com/vilhei/util_procs" }
 itertools = "0.12.0"
 num = "0.4.1"
+
+[profile.dev]
+debug = "full"
+
+[profile.release]
+# lto = true
+opt-level = 3

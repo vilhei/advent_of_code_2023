@@ -8,8 +8,8 @@ impl Task for Day9 {
 
         let mut total = 0;
         for sequence in sequences {
-            let mut diffs = calc_diffs_until_zeros(sequence);
-            total += solve_next(&mut diffs)
+            let diffs = calc_diffs_until_zeros(sequence);
+            total += diffs.iter().sum::<i64>();
         }
         Ok(total.to_string())
     }
@@ -18,8 +18,8 @@ impl Task for Day9 {
 
         let mut total = 0;
         for sequence in sequences {
-            let mut diffs = calc_diffs_until_zeros(sequence);
-            total += solve_next(&mut diffs);
+            let diffs = calc_diffs_until_zeros(sequence);
+            total += diffs.iter().sum::<i64>();
         }
         Ok(total.to_string())
     }
@@ -27,14 +27,6 @@ impl Task for Day9 {
     fn get_day(&self) -> u32 {
         9
     }
-}
-
-fn solve_next(diffs: &mut Vec<i64>) -> i64 {
-    for i in (0..diffs.len() - 1).rev() {
-        let new = diffs[i + 1] + diffs[i];
-        diffs[i] = new;
-    }
-    *diffs.first().unwrap()
 }
 
 fn calc_diffs_until_zeros(mut curr: Vec<i64>) -> Vec<i64> {
